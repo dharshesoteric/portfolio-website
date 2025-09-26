@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>db | Portfolio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            margin-bottom: 60px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 5px;
+            color: #ffffff;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            margin-bottom: 80px;
+        }
+
+        .nav-item {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .nav-item::before {
+            content: "> ";
+            color: #666;
+            margin-right: 10px;
+        }
+
+        .nav-link {
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #4a9eff;
+        }
+
+        .username {
+            font-size: 24px;
+            font-weight: 300;
+            margin-bottom: 60px;
+            color: #ffffff;
+        }
+
+        .bio {
+            margin-bottom: 40px;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .bio-text {
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: #333;
+            color: #ffffff;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .exploring {
+            margin-bottom: 60px;
+            font-size: 16px;
+        }
+
+        .social-links {
+            margin-bottom: 60px;
+        }
+
+        .social-link {
+            color: #ffffff;
+            text-decoration: underline;
+            margin-right: 40px;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: #4a9eff;
+        }
+
+        .languages-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #ffffff;
+        }
+
+        .section-title::after {
+            content: " →";
+            color: #666;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            font-size: 16px;
+        }
+
+        .tech-category {
+            color: #ffffff;
+        }
+
+        .tech-items {
+            color: #ffffff;
+        }
+
+        .content-section {
+            display: none;
+            padding: 20px 0;
+        }
+
+        .section-header {
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: #4a9eff;
+        }
+
+        .item {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #222;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        .item-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .item-description {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+
+        .item-tech {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .editable {
+            background: transparent;
+            border: 1px dashed #333;
+            padding: 5px;
+            border-radius: 3px;
+            color: inherit;
+            font-family: inherit;
+            font-size: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .editable:focus {
+            outline: none;
+            border-color: #4a9eff;
+        }
+
+        .edit-btn {
+            background: #333;
+            border: none;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            background: #4a9eff;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 10px;
+            }
+            
+            .tech-stack {
+                grid-template-columns: 1fr;
+            }
+            
+            .social-link {
+                margin-right: 20px;
+                margin-bottom: 10px;
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">db | Portfolio</div>
+            <div class="subtitle">Gradient descent-ing things and my life :)</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="#" class="nav-link" data-section="research">research</a></li>
+            <li class="nav-item"><a href="#" class="nav-link" data-section="books">books</a></li>
+            <li class="nav-item"><a href="#" class="nav-link" data-section="projects">projects</a></li>
+            <li class="nav-item"><a href="#" class="nav-link" data-section="resume">resume</a></li>
+            <li class="nav-item"><a href="#" class="nav-link" data-section="blogs">blogs</a></li>
+        </ul>
+
+        <div class="username" contenteditable="true" class="editable">db</div>
+
+        <div class="bio">
+            <div class="bio-text">
+                loves working on 
+                <span class="tag" contenteditable="true">ml</span>, 
+                <span class="tag" contenteditable="true">math</span>,<br>
+                <span class="tag" contenteditable="true">physics</span>, and 
+                <span class="tag" contenteditable="true">space related things</span>.
+            </div>
+        </div>
+
+        <div class="exploring">
+            extensively working on <span class="tag" contenteditable="true">ml</span> and <span class="tag" contenteditable="true">data structures</span> as of <span class="tag" contenteditable="true">2025</span>.
+        </div>
+
+        <div class="social-links">
+    <div class="section-title">Social Links</div>
+    <a href="https://github.com/dharshesoteric" target="_blank" class="social-link">GitHub</a>
+    <a href="https://x.com/dharsh_esoteric" target="_blank" class="social-link">X</a>
+    <a href="https://linkedin.com/in/dharsan-balamurugan" target="_blank" class="social-link">LinkedIn</a>
+    <a href="https://instagram.com/dharsh.esoteric" target="_blank" class="social-link">Instagram</a>
+</div>
+
+
+        <div class="languages-section">
+            <div class="section-title">languages & techstack</div>
+            <div class="tech-stack">
+                <div class="tech-category">ml</div>
+                <div class="tech-items">
+                    <div contenteditable="true">TensorFlow</div>
+                    <div contenteditable="true">Scikit-learn</div>
+                    <div contenteditable="true">Keras(currently working on)</div>
+                    <div contenteditable="true">PyTorch (soon)</div>
+                </div>
+                <div class="tech-category">py</div>
+                <div class="tech-items">
+                    <div contenteditable="true">OOPs</div>
+                    <div contenteditable="true">FastAPI</div>
+                    <div contenteditable="true">Misc py libs(np, pd, mplib, sns)</div>
+                </div>
+                <div class="tech-category">tools & platforms</div>
+                <div class="tech-items">
+                    <div contenteditable="true">Tableau/PowerBI</div>
+                    <div contenteditable="true">Databricks</div>
+                    <div contenteditable="true">GCP</div>
+                    <div contenteditable="true">Docker</div>
+                    <div contenteditable="true">vc sys(git/github)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Sections -->
+        <div id="research" class="content-section">
+            <div class="section-header">research</div>
+            <div class="item">
+                <div class="item-title" contenteditable="true">Machine Learning Research Project</div>
+                <div class="item-description" contenteditable="true">Research on advanced ML algorithms and their applications in sentiment analysis using customer data for ad-targeting.</div>
+                <div class="item-tech" contenteditable="true">Python, TensorFlow, Sklearn, algos(SVM, NB classifier, TF-IDF)</div>
+            </div>
+        </div>
+
+        <div id="books" class="content-section">
+            <div class="section-header">books</div>
+            <div class="item">
+                <div class="item-title" contenteditable="true">Hands-on Machine Learning with Scikit-Learn, Keras & TensorFlow</div>
+                <div class="item-description" contenteditable="true">Comprehensive guide to machine learning fundamentals and applications.</div>
+                <div class="item-tech" contenteditable="true">by Aurelion Geron</div>
+            </div>
+            <div class="item">
+                <div class="item-title" contenteditable="true">Database system concepts</div>
+                <div class="item-description" contenteditable="true">Everything about databases, rdbms, design principles, query processing, txn mgmt, sys architectures, data storage, warehousing, mining, information retrieval and much more.</div>
+                <div class="item-tech" contenteditable="true">by Abraham Silberschatz, Henry F. Korth, S. Sudarshan</div>
+            </div>
+        </div>
+
+        <div id="projects" class="content-section">
+            <div class="section-header">projects</div>
+            <div class="item">
+                <div class="item-title" contenteditable="true">YouTube sentimental analysis</div>
+                <div class="item-description" contenteditable="true">Sentimental analysis of youtube channels based on viewer demographics and comments fetched from using YouTube APIv3.</div>
+                <div class="item-tech" contenteditable="true">Py, data cleaning and data viz libs, sklearn, YTAPIv3, NLTK, WordCloud</div>
+            </div>
+            <div class="item">
+                <div class="item-title" contenteditable="true">Weather Application</div>
+                <div class="item-description" contenteditable="true">Real-time weather application using API data.</div>
+                <div class="item-tech" contenteditable="true">HTML, Tailwind CSS, JS, AirVisual API </div>
+            </div>
+            <div class="item">
+                <div class="item-title" contenteditable="true">Medical insurance cost prediction sys</div>
+                <div class="item-description" contenteditable="true">By providing the required data, the sys predicts the approximate medical insurance based on historical insurance cost collected across the United States.</div>
+                <div class="item-tech" contenteditable="true">Py, GBRegressor, data cleaning and data viz libs, SKlearn</div>
+            </div>
+        </div>
+
+        <div id="resume" class="content-section">
+            <div class="section-header">resume</div>
+            <div class="item">
+                <div class="item-title" contenteditable="true">Education</div>
+                <div class="item-description" contenteditable="true">Bachelor's in Computer Science majoring in Machine Learning and Data Science</div>
+                <div class="item-tech" contenteditable="true">2022-2026</div>
+            </div>
+            <div class="item">
+                <div class="item-title" contenteditable="true">Experience</div>
+                <div class="item-description" contenteditable="true">Project trainee at CipherSchools</div>
+                <div class="item-tech" contenteditable="true">Summer 2024</div>
+            </div>
+        </div>
+
+        <div id="blogs" class="content-section">
+            <div class="section-header">blogs and extra-curriculars</div>
+            <div class="item">
+                <div class="item-title" contenteditable="true">Photography and Videography</div>
+                <div class="item-description" contenteditable="true">Photos and videos of wildlife and nature on my ig handle</div>
+                <div class="item-tech" contenteditable="true">2021 - now</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const navLinks = document.querySelectorAll('.nav-link');
+    const contentSections = document.querySelectorAll('.content-section');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetSection = document.getElementById(link.dataset.section);
+
+            if (!targetSection) return;
+
+            // Hide all sections
+            contentSections.forEach(section => {
+                section.style.display = "none";
+            });
+
+            // Show only clicked section
+            targetSection.style.display = "block";
+
+            // Scroll smoothly to that section
+            targetSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        });
+    });
+
+    // Save edits to localStorage
+    function saveContent() {
+        const editableElements = document.querySelectorAll('[contenteditable="true"]');
+        const content = {};
+        
+        editableElements.forEach((el, index) => {
+            content[index] = el.innerHTML;
+        });
+        
+        localStorage.setItem("portfolioContent", JSON.stringify(content));
+    }
+
+    // Load saved edits on page load
+    window.addEventListener("DOMContentLoaded", () => {
+        const savedContent = JSON.parse(localStorage.getItem("portfolioContent"));
+        if (savedContent) {
+            const editableElements = document.querySelectorAll('[contenteditable="true"]');
+            editableElements.forEach((el, index) => {
+                if (savedContent[index]) el.innerHTML = savedContent[index];
+            });
+        }
+
+        // By default, show only Projects (or change this if you want another default)
+        contentSections.forEach(section => section.style.display = "none");
+        document.getElementById("projects").style.display = "block";
+    });
+</script>
+</body>
+</html>
