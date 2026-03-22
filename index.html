@@ -6,11 +6,15 @@
     <title>db | Portfolio</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -69,15 +73,22 @@
             transition: color 0.3s ease;
         }
 
-        .nav-link:hover {
+        .nav-link:hover,
+        .nav-link.active {
             color: #4a9eff;
         }
 
         .username {
             font-size: 24px;
             font-weight: 300;
-            margin-bottom: 60px;
+            margin-bottom: 6px;
             color: #ffffff;
+        }
+
+        .name {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 60px;
         }
 
         .bio {
@@ -123,7 +134,7 @@
         }
 
         .languages-section {
-            margin-bottom: 40px;
+            margin-bottom: 60px;
         }
 
         .section-title {
@@ -133,7 +144,7 @@
         }
 
         .section-title::after {
-            content: " →";
+            content: " \2192";
             color: #666;
         }
 
@@ -158,8 +169,17 @@
         }
 
         .content-section {
-            display: none;
             padding: 20px 0;
+            margin-bottom: 40px;
+            scroll-margin-top: 40px;
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .content-section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .section-header {
@@ -185,6 +205,18 @@
             color: #ffffff;
         }
 
+        .item-title-link {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .item-title-link:hover {
+            color: #4a9eff;
+            border-color: rgba(74, 158, 255, 0.55);
+        }
+
         .item-description {
             font-size: 14px;
             color: #ccc;
@@ -196,56 +228,128 @@
             color: #888;
         }
 
-        .editable {
-            background: transparent;
-            border: 1px dashed #333;
-            padding: 5px;
-            border-radius: 3px;
-            color: inherit;
-            font-family: inherit;
-            font-size: inherit;
-            transition: border-color 0.3s ease;
+        .scroll-nav {
+            position: fixed;
+            top: 50%;
+            right: 28px;
+            transform: translateY(-50%) translateX(24px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+            z-index: 10;
         }
 
-        .editable:focus {
-            outline: none;
-            border-color: #4a9eff;
+        .scroll-nav.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(-50%) translateX(0);
         }
 
-        .edit-btn {
-            background: #333;
-            border: none;
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 12px;
-            margin-left: 10px;
-            transition: background-color 0.3s ease;
+        .scroll-nav-list {
+            list-style: none;
+            text-align: right;
         }
 
-        .edit-btn:hover {
-            background: #4a9eff;
+        .scroll-nav-item {
+            margin-bottom: 14px;
+            opacity: 0.45;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .scroll-nav-item.active {
+            opacity: 1;
+            transform: translateX(-4px);
+        }
+
+        .scroll-nav-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .scroll-nav-link:hover {
+            color: #4a9eff;
+        }
+
+        @media (max-width: 1024px) {
+            .scroll-nav {
+                right: 16px;
+            }
         }
 
         @media (max-width: 768px) {
             .container {
                 padding: 20px 10px;
             }
-            
+
             .tech-stack {
                 grid-template-columns: 1fr;
             }
-            
+
             .social-link {
                 margin-right: 20px;
                 margin-bottom: 10px;
                 display: inline-block;
             }
+
+            .scroll-nav {
+                top: auto;
+                right: 12px;
+                bottom: 16px;
+                left: 12px;
+                transform: translateY(24px);
+                background: rgba(0, 0, 0, 0.88);
+                border: 1px solid #222;
+                border-radius: 999px;
+                padding: 10px 14px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+            .scroll-nav::-webkit-scrollbar {
+                display: none;
+            }
+
+            .scroll-nav.visible {
+                transform: translateY(0);
+            }
+
+            .scroll-nav-list {
+                display: flex;
+                justify-content: flex-start;
+                gap: 14px;
+                min-width: max-content;
+                text-align: left;
+            }
+
+            .scroll-nav-item {
+                margin-bottom: 0;
+                white-space: nowrap;
+            }
+
+            .scroll-nav-item.active {
+                transform: translateY(-1px);
+            }
+
+            .scroll-nav-link {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
+    <nav class="scroll-nav" aria-label="Scrolling section navigation">
+        <ul class="scroll-nav-list">
+            <li class="scroll-nav-item"><a href="#research" class="scroll-nav-link" data-section="research">research</a></li>
+            <li class="scroll-nav-item"><a href="#projects" class="scroll-nav-link" data-section="projects">projects</a></li>
+            <li class="scroll-nav-item"><a href="#resume" class="scroll-nav-link" data-section="resume">resume</a></li>
+            <li class="scroll-nav-item"><a href="#books" class="scroll-nav-link" data-section="books">books</a></li>
+            <li class="scroll-nav-item"><a href="#blogs" class="scroll-nav-link" data-section="blogs">blogs</a></li>
+        </ul>
+    </nav>
+
     <div class="container">
         <div class="header">
             <div class="title">db | Portfolio</div>
@@ -253,201 +357,239 @@
         </div>
 
         <ul class="nav-menu">
-            <li class="nav-item"><a href="#" class="nav-link" data-section="research">research</a></li>
-            <li class="nav-item"><a href="#" class="nav-link" data-section="books">books</a></li>
-            <li class="nav-item"><a href="#" class="nav-link" data-section="projects">projects</a></li>
-            <li class="nav-item"><a href="#" class="nav-link" data-section="resume">resume</a></li>
-            <li class="nav-item"><a href="#" class="nav-link" data-section="blogs">blogs</a></li>
+            <li class="nav-item"><a href="#research" class="nav-link" data-section="research">research</a></li>
+            <li class="nav-item"><a href="#projects" class="nav-link" data-section="projects">projects</a></li>
+            <li class="nav-item"><a href="#resume" class="nav-link" data-section="resume">resume</a></li>
+            <li class="nav-item"><a href="#books" class="nav-link" data-section="books">books</a></li>
+            <li class="nav-item"><a href="#blogs" class="nav-link" data-section="blogs">blogs</a></li>
         </ul>
 
-        <div class="username" contenteditable="true" class="editable">db</div>
+        <div class="username">db</div>
+        <div class="name">Dharsan Balamurugan</div>
 
         <div class="bio">
             <div class="bio-text">
-                loves working on 
-                <span class="tag" contenteditable="true">ml</span>, 
-                <span class="tag" contenteditable="true">physics</span>,<br>
-                <span class="tag" contenteditable="true">math</span>, and 
-                <span class="tag" contenteditable="true">space related things</span>.
+                loves working on
+                <span class="tag">ml</span>,
+                <span class="tag">physics</span>,<br>
+                <span class="tag">math</span>, and
+                <span class="tag">space related things</span>.
             </div>
         </div>
 
         <div class="exploring">
-            extensively working on <span class="tag" contenteditable="true">ml</span> and <span class="tag" contenteditable="true">data structures</span> as of <span class="tag" contenteditable="true">2026</span>.
+            extensively working on <span class="tag">ml</span> and <span class="tag">data structures</span> as of <span class="tag">2026</span>.
         </div>
 
         <div class="social-links">
-    <div class="section-title">Social Links</div>
-    <a href="https://github.com/dharshesoteric" target="_blank" class="social-link">GitHub</a>
-    <a href="https://x.com/dharsh_esoteric" target="_blank" class="social-link">X</a>
-    <a href="https://linkedin.com/in/dharsan-balamurugan" target="_blank" class="social-link">LinkedIn</a>
-    <a href="https://instagram.com/dharsh.esoteric" target="_blank" class="social-link">Instagram</a>
-</div>
-
+            <div class="section-title">Social Links</div>
+            <a href="https://github.com/dharshesoteric" target="_blank" rel="noreferrer" class="social-link">GitHub</a>
+            <a href="https://x.com/dharsh_esoteric" target="_blank" rel="noreferrer" class="social-link">X</a>
+            <a href="https://linkedin.com/in/dharsan-balamurugan" target="_blank" rel="noreferrer" class="social-link">LinkedIn</a>
+            <a href="https://instagram.com/dharsh.esoteric" target="_blank" rel="noreferrer" class="social-link">Instagram</a>
+        </div>
 
         <div class="languages-section">
             <div class="section-title">domains & techstack</div>
             <div class="tech-stack">
                 <div class="tech-category">ml</div>
                 <div class="tech-items">
-                    <div contenteditable="true">pandas & numPy</div>
-                    <div contenteditable="true">TensorFlow</div>
-                    <div contenteditable="true">Scikit-learn</div>
-                    <div contenteditable="true">Keras(currently working on)</div>
-                    <div contenteditable="true">PyTorch(soon)</div>
+                    <div>pandas & numPy</div>
+                    <div>TensorFlow</div>
+                    <div>Scikit-learn</div>
+                    <div>Keras(currently working on)</div>
+                    <div>PyTorch(soon)</div>
                 </div>
                 <div class="tech-category">backend</div>
                 <div class="tech-items">
-                    <div contenteditable="true">Flask</div>
-                    <div contenteditable="true">FastAPI</div>
-                    <div contenteditable="true">SQLAlchemy</div>
-                    <div contenteditable="true">MongoDB</div>
-                    <div contenteditable="true">MySQL & PostgreSQL</div>
+                    <div>Flask</div>
+                    <div>FastAPI</div>
+                    <div>SQLAlchemy</div>
+                    <div>MongoDB</div>
+                    <div>MySQL & PostgreSQL</div>
                 </div>
                 <div class="tech-category">languages</div>
                 <div class="tech-items">
-                    <div contenteditable="true">python</div>
-                    <div contenteditable="true">SQL</div>
-                    <div contenteditable="true">C (Elementary proficiency)</div>
-                    <div contenteditable="true">Rust (Elementary proficiency)</div>
+                    <div>python</div>
+                    <div>SQL</div>
+                    <div>C (Elementary proficiency)</div>
+                    <div>JavaScript (Elementary proficiency)</div>
                 </div>
                 <div class="tech-category">tools & platforms</div>
                 <div class="tech-items">
-                    <div contenteditable="true">Tableau/PowerBI</div>
-                    <div contenteditable="true">Databricks</div>
-                    <div contenteditable="true">GCP</div>
-                    <div contenteditable="true">Azure</div>
-                    <div contenteditable="true">Docker</div>
-                    <div contenteditable="true">git</div>
+                    <div>Tableau/PowerBI</div>
+                    <div>Databricks</div>
+                    <div>GCP</div>
+                    <div>Azure</div>
+                    <div>Docker</div>
+                    <div>git</div>
                 </div>
             </div>
         </div>
 
-        <!-- Content Sections -->
         <div id="research" class="content-section">
             <div class="section-header">research</div>
             <div class="item">
-                <div class="item-title" contenteditable="true">Multi-Modal Adverse Weather Object Detection for Autonomous Self Driving Systems</div>
-                <div class="item-description" contenteditable="true">Research on object detections systems on how well they perform in night and low visibility situations and improve the detection accuracy using thermal imaging and other sensor data.</div>
-                <div class="item-tech" contenteditable="true">Python, TensorFlow, PyTorch, Sklearn, YOLOv5s, ResNet-18, OpenCV, FLIR dataset</div>
-            </div>
-        </div>
-
-        <div id="books" class="content-section">
-            <div class="section-header">books</div>
-            <div class="item">
-                <div class="item-title" contenteditable="true">Hands-on Machine Learning with Scikit-Learn, Keras & TensorFlow</div>
-                <div class="item-description" contenteditable="true">Comprehensive guide to machine learning fundamentals and applications.</div>
-                <div class="item-tech" contenteditable="true">by Aurelion Geron</div>
-            </div>
-            <div class="item">
-                <div class="item-title" contenteditable="true">Database system concepts</div>
-                <div class="item-description" contenteditable="true">Everything about databases, rdbms, design principles, query processing, txn mgmt, sys architectures, data storage, warehousing, mining, information retrieval and much more.</div>
-                <div class="item-tech" contenteditable="true">by Abraham Silberschatz, Henry F. Korth, S. Sudarshan</div>
+                <div class="item-title">Selective Event Desktop Automation</div>
+                <div class="item-description">Research on automation systems and scripts targeting desktop enviroments. Init and experimenting with ml models and generative AI for maximum leverage in the finished MVP.</div>
+                <div class="item-tech">Python, Rust, TensorFlow, Sklearn, NLP(word2vec), Markov models, GenAI, MCP</div>
             </div>
         </div>
 
         <div id="projects" class="content-section">
             <div class="section-header">projects</div>
             <div class="item">
-                <div class="item-title" contenteditable="true">YouTube sentimental analysis</div>
-                <div class="item-description" contenteditable="true">Sentimental analysis of youtube channels based on viewer demographics and comments fetched from using YouTube APIv3.</div>
-                <div class="item-tech" contenteditable="true">Py, data cleaning and data viz libs, Sklearn, YTAPIv3, NLTK, WordCloud</div>
+                <div class="item-title"><a href="#" class="item-title-link">Y-Insight</a></div>
+                <div class="item-description">An intelligent analytics platform for users to compare and analyze channels as per their preferences and needs.</div>
+                <div class="item-tech">Py, pd and numpy, Sklearn, YTAPIv3, NLTK, LLMs, WordCloud</div>
             </div>
             <div class="item">
-                <div class="item-title" contenteditable="true">Weather Application</div>
-                <div class="item-description" contenteditable="true">Real-time weather application using API data.</div>
-                <div class="item-tech" contenteditable="true">HTML, Tailwind CSS, JS, AirVisual API </div>
+                <div class="item-title"><a href="#" class="item-title-link">Weather Application</a></div>
+                <div class="item-description">Real-time weather application using API data.</div>
+                <div class="item-tech">HTML, Tailwind CSS, JS, AirVisual API</div>
             </div>
             <div class="item">
-                <div class="item-title" contenteditable="true">Medical insurance cost prediction sys</div>
-                <div class="item-description" contenteditable="true">By providing the required parameters, the sys predicts the approximate medical insurance cost based on historical insurance data collected across the United States.</div>
-                <div class="item-tech" contenteditable="true">Py, GBRegressor, data cleaning and data viz libs, Sklearn</div>
-            </div>
-            <div class="item">
-                <div class="item-title" contenteditable="true">Deep learning image classification app using CIFAR-10</div>
-                <div class="item-description" contenteditable="true">Fine tuned mobileV2net model on the CIFAR-10 dataset to classify images based on the 10 specified classes of CIFAR-10. PS - Currently in the works to enhance it, planning to extend its application using other real-world datasets.</div>
-                <div class="item-tech" contenteditable="true">Py, Tensorflow, keras, Sklearn, FastAPI, HTML, CSS</div>
+                <div class="item-title"><a href="#" class="item-title-link">SnapClass</a></div>
+                <div class="item-description">Fine tuned mobileV2net model on the CIFAR-10 dataset to classify images based on the 10 specified classes of CIFAR-10. PS - Currently in the works to enhance it, planning to extend its application using other real-world datasets.</div>
+                <div class="item-tech">Py, Tensorflow, keras, Sklearn, FastAPI, HTML, CSS</div>
             </div>
         </div>
 
         <div id="resume" class="content-section">
             <div class="section-header">resume</div>
             <div class="item">
-                <div class="item-title" contenteditable="true">Education</div>
-                <div class="item-description" contenteditable="true">Bachelor's in Computer Science majoring in Machine Learning and Data Science</div>
-                <div class="item-tech" contenteditable="true">2022-2026</div>
+                <div class="item-title">Education</div>
+                <div class="item-description">Bachelor's in Computer Science majoring in Machine Learning and Data Science</div>
+                <div class="item-tech">2022-2026</div>
             </div>
             <div class="item">
-                <div class="item-title" contenteditable="true">Experience</div>
-                <div class="item-description" contenteditable="true">Project trainee at CipherSchools</div>
-                <div class="item-tech" contenteditable="true">Summer 2024</div>
+                <div class="item-title">Experience</div>
+                <div class="item-description">Project trainee at CipherSchools</div>
+                <div class="item-tech">Summer 2024</div>
+            </div>
+        </div>
+
+        <div id="books" class="content-section">
+            <div class="section-header">books</div>
+            <div class="item">
+                <div class="item-title">Hands-on Machine Learning with Scikit-Learn, Keras & TensorFlow</div>
+                <div class="item-description">Comprehensive guide to machine learning fundamentals and applications.</div>
+                <div class="item-tech">by Aurelion Geron</div>
+            </div>
+            <div class="item">
+                <div class="item-title">Database system concepts</div>
+                <div class="item-description">Everything about databases, rdbms, design principles, query processing, txn mgmt, sys architectures, data storage, warehousing, mining, information retrieval and much more.</div>
+                <div class="item-tech">by Abraham Silberschatz, Henry F. Korth, S. Sudarshan</div>
             </div>
         </div>
 
         <div id="blogs" class="content-section">
             <div class="section-header">blogs and extra-curriculars</div>
             <div class="item">
-                <div class="item-title" contenteditable="true">Photography and Videography</div>
-                <div class="item-description" contenteditable="true">Photos and videos of wildlife and nature on my ig handle</div>
-                <div class="item-tech" contenteditable="true">2021 - now</div>
+                <div class="item-title">Photography and Videography</div>
+                <div class="item-description">Photos and videos of wildlife and nature on my ig handle</div>
+                <div class="item-tech">2021 - now</div>
             </div>
         </div>
     </div>
 
     <script>
-    const navLinks = document.querySelectorAll('.nav-link');
-    const contentSections = document.querySelectorAll('.content-section');
+        const topNavLinks = document.querySelectorAll('.nav-link');
+        const sideNavLinks = document.querySelectorAll('.scroll-nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const scrollNav = document.querySelector('.scroll-nav');
+        const projectTitleLinks = document.querySelectorAll('.item-title-link');
+        const firstSection = contentSections[0];
 
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetSection = document.getElementById(link.dataset.section);
-
-            if (!targetSection) return;
-
-            // Hide all sections
-            contentSections.forEach(section => {
-                section.style.display = "none";
+        function clearActiveSections() {
+            topNavLinks.forEach((link) => {
+                link.classList.remove('active');
             });
 
-            // Show only clicked section
-            targetSection.style.display = "block";
-
-            // Scroll smoothly to that section
-            targetSection.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-        });
-    });
-
-    // Save edits to localStorage
-    function saveContent() {
-        const editableElements = document.querySelectorAll('[contenteditable="true"]');
-        const content = {};
-        
-        editableElements.forEach((el, index) => {
-            content[index] = el.innerHTML;
-        });
-        
-        localStorage.setItem("portfolioContent", JSON.stringify(content));
-    }
-
-    // Load saved edits on page load
-    window.addEventListener("DOMContentLoaded", () => {
-        const savedContent = JSON.parse(localStorage.getItem("portfolioContent"));
-        if (savedContent) {
-            const editableElements = document.querySelectorAll('[contenteditable="true"]');
-            editableElements.forEach((el, index) => {
-                if (savedContent[index]) el.innerHTML = savedContent[index];
+            sideNavLinks.forEach((link) => {
+                link.parentElement.classList.remove('active');
             });
         }
 
-        // By default, show only Projects (or change this if you want another default)
-        contentSections.forEach(section => section.style.display = "none");
-        document.getElementById("projects").style.display = "block";
-    });
-</script>
+        function setActiveSection(sectionId) {
+            topNavLinks.forEach((link) => {
+                link.classList.toggle('active', link.dataset.section === sectionId);
+            });
+
+            sideNavLinks.forEach((link) => {
+                const isActive = link.dataset.section === sectionId;
+                link.parentElement.classList.toggle('active', isActive);
+            });
+        }
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            rootMargin: '-10% 0px -15% 0px',
+            threshold: 0.05
+        });
+
+        contentSections.forEach((section) => {
+            sectionObserver.observe(section);
+        });
+
+        function getActiveSectionId() {
+            const marker = window.innerHeight * 0.34;
+            let activeSectionId = null;
+
+            contentSections.forEach((section) => {
+                if (section.getBoundingClientRect().top <= marker) {
+                    activeSectionId = section.id;
+                }
+            });
+
+            return activeSectionId;
+        }
+
+        function updateScrollState() {
+            const beforeFirstSection = firstSection
+                ? firstSection.getBoundingClientRect().top > window.innerHeight * 0.35
+                : window.scrollY < 10;
+
+            if (beforeFirstSection) {
+                clearActiveSections();
+            } else {
+                const activeSectionId = getActiveSectionId();
+                if (activeSectionId) {
+                    setActiveSection(activeSectionId);
+                }
+            }
+
+            scrollNav.classList.toggle('visible', window.scrollY > 220);
+        }
+
+        window.addEventListener('scroll', updateScrollState, { passive: true });
+        window.addEventListener('resize', updateScrollState);
+        window.addEventListener('DOMContentLoaded', () => {
+            updateScrollState();
+            if (contentSections.length > 0) {
+                contentSections[0].classList.add('visible');
+            }
+            requestAnimationFrame(updateScrollState);
+        });
+
+        [...topNavLinks, ...sideNavLinks].forEach((link) => {
+            link.addEventListener('click', () => {
+                setActiveSection(link.dataset.section);
+            });
+        });
+
+        projectTitleLinks.forEach((link) => {
+            link.addEventListener('click', (event) => {
+                if (link.getAttribute('href') === '#') {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
